@@ -1,37 +1,32 @@
 
-let canvas = document.getElementById('view')
+// George Guvamatanga
 
-canvas.width = '480';
-canvas.height = '480';
-canvas.style.border = '1px solid black'
+// Get 2d canvas context for drawing
+let canvas = document.getElementById('view').getContext('2d')
 
-canvas = canvas.getContext('2d')
-
+/* Create the snake, which is an array of coordinates of where the
+ individual pieces are */
 let snake = [
-	{ x:100, y:100, color:'lightblue' },
-	{ x:120, y:100, color:'lightblue' },
-	{ x:140, y:100, color:'lightblue' },
-	{ x:160, y:100, color:'lightblue' },
-	{ x:180, y:100, color:'lightblue' },
+	{ x:100, y:100 },
+	{ x:120, y:100 },
+	{ x:140, y:100 },
+	{ x:160, y:100 },
+	{ x:180, y:100 },
 ]
 
 let currentSnakeDirection = 'ArrowRight'
+
+/* The position of the food */
 let currentFood = {x:null, y:null}
+
 let score = 0
 
 function drawSnake(){
 	let x = false;
 	snake.forEach(piece => {
-		if(x = true){
-			canvas.fillStyle = 'blue'
-			canvas.fillRect(piece.x, piece.y, 10, 10)
-			canvas.strokeRect(piece.x, piece.y, 10, 10)
-		}else{
-			canvas.fillStyle = 'red'
-			canvas.fillRect(piece.x, piece.y, 10, 10)
-			canvas.strokeRect(piece.x, piece.y, 10, 10)
-		}
-		
+		canvas.fillStyle = 'lime'
+		canvas.fillRect(piece.x, piece.y, 10, 10)
+		canvas.strokeRect(piece.x, piece.y, 10, 10)
 	})
 }
 
@@ -52,6 +47,7 @@ function moveSnake(){
 }
 
 function checkForCollision(){
+	// Check if the snake has collided with the play area boundary
 	if(snake[0].x < -10 || snake[0].x > 490) return true
 	if(snake[0].y < -10 || snake[0].y > 490) return true
 
@@ -82,20 +78,13 @@ function drawFood(){
 
 document.addEventListener('keydown', function(e){
 	currentSnakeDirection = e.key;
-	// loop()
 })
 
 function loop(){
 	if(checkForCollision()) return
-
 	canvas.clearRect(0, 0, 480, 480)
-	moveSnake()
-
-	drawFood()
-	drawSnake()
-	
+	moveSnake(); drawFood(); drawSnake()
 	requestAnimationFrame(loop, 1)
 }
 
-generateFood()
-loop()
+generateFood(); loop()
